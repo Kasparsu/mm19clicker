@@ -7,10 +7,13 @@
       </div>
       <div class="column">
         <upgrade
+            v-for="(upgrade, index) in upgrades"
             :count="count"
-            :cost="upgrades[0].cost"
-            :increment="upgrades[0].increment"
-            @upgrade="upgrade"></upgrade>
+            :cost="upgrade.cost"
+            :increment="upgrade.increment"
+            :key="index"
+            :index="index"
+            @upgrade="doUpgrade"></upgrade>
       </div>
     </div>
   </div>
@@ -30,7 +33,12 @@ export default {
       count: 0,
       perSecond: 0,
       upgrades: [
-        {cost: 10, increment: 0.1}
+        {cost: 10, increment: 0.1},
+        {cost: 100, increment: 1},
+        {cost: 1000, increment: 10},
+        {cost: 10000, increment: 100},
+        {cost: 100000, increment: 1000},
+        {cost: 1000000, increment: 10000},
       ]
     }
   },
@@ -38,10 +46,10 @@ export default {
     autoClick(){
       this.count+=this.perSecond;
     },
-    upgrade({cost, increment}){
+    doUpgrade({cost, increment, index}){
       this.perSecond+=increment;
       this.count-=cost;
-      this.upgrades[0].cost =  Math.ceil(this.upgrades[0].cost + (this.upgrades[0].cost /10));
+      this.upgrades[index].cost =  Math.ceil(this.upgrades[index].cost + (this.upgrades[index].cost /10));
     }
   },
   computed: {
